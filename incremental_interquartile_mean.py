@@ -3,6 +3,7 @@ import math
 import operator
 from functools import reduce
 from typing import Iterable
+from bisect import insort
 
 
 def interquartile_mean(iterable: Iterable) -> None:
@@ -15,20 +16,20 @@ def interquartile_mean(iterable: Iterable) -> None:
     """
     data = []
     for number in iterable:
-        data.append(int(number))
+        insort(data, int(number))
         if len(data) >= 4:
             quarter_data_length = len(data) / 4.0
-            data.sort()
             interquartile_range = data[
-                                  int(math.ceil(quarter_data_length)) - 1:
-                                  int(math.floor((3 * quarter_data_length))) + 1
-                                  ]
+                int(math.ceil(quarter_data_length)) - 1:
+                int(math.floor((3 * quarter_data_length))) + 1
+            ]
             factor = quarter_data_length - (len(interquartile_range) / 2.0 - 1)
-
-            mean = (reduce(operator.add, interquartile_range[1:-1], 0)
-                    + (interquartile_range[0] + interquartile_range[-1])
-                    * factor
-                    ) / (2 * quarter_data_length)
+            sum_interquartile_range = (
+                reduce(operator.add, interquartile_range[1:-1], 0)
+                + (interquartile_range[0] + interquartile_range[-1])
+                * factor
+            )
+            mean = sum_interquartile_range / (2 * quarter_data_length)
             print("%d: %.2f" % (len(data), mean))
 
 

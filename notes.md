@@ -32,3 +32,12 @@ real    2m7.046s
 user    2m6.203s
 sys     0m0.511s
 ```
+
+Next I decided to grab some low-hanging fruit. I immediately saw the the `data.sort()` was getting called
+every time. For this mush data it's best to insert in an ordered place.
+
+This saved about 42ms (a 24% decrease in execution time) processing the large `data.txt` file.
+I imagine the percent decrease in increase with larger data sets.
+
+Usually reduce functions are clean but slow. 
+
