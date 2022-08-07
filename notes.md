@@ -34,10 +34,19 @@ sys     0m0.511s
 ```
 
 Next I decided to grab some low-hanging fruit. I immediately saw the the `data.sort()` was getting called
-every time. For this mush data it's best to insert in an ordered place.
+every for every iteration. For this much data it's best to insert the value and maintain the sorting.
 
 This saved about 42ms (a 24% decrease in execution time) processing the large `data.txt` file.
 I imagine the percent decrease in increase with larger data sets.
 
-Usually reduce functions are clean but slow. 
+Usually reduce functions are clean but slow. Updating the `reduce` to a `sum` took the starting execution time 
+from 2 minutes and 54 seconds down to 45 seconds.
 
+The overall execution time reduced by 129 seconds (a 74% decrease).
+
+The system execution time is now 37 seconds:
+```commandline
+real    0m37.074s
+user    0m36.655s
+sys     0m0.348s
+```
