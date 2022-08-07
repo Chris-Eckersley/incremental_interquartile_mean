@@ -1,8 +1,8 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import math
 import random
 
-f = open("data.txt","w")
+f = open("data.txt", "w")
 for i in range(100000):
     v = math.sin(i * math.pi/80000) * 300 + random.randint(0, 40) + 280
     v = max(v, 0)
