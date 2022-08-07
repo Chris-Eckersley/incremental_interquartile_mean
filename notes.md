@@ -1,4 +1,4 @@
-#Improvement process and steps
+# Improvement process and steps
 
 -------------------------------------------------------
 ## Part 1
@@ -8,8 +8,7 @@ testing might look like.
 
 ### Step 2: Read and step through the code
 Playing with and stepping through the code with a debugger helps build interest and gets my mind in the game. :-)  I 
-spend a little time thinking about the big picture and looking for any obvious issues early on. Then that gets sent off
-to my subconscious. :-)
+spent a little time thinking about the big picture and looking for any obvious issues early on. Then I set that aside.
 
 ### Step 3: Refactoring & Improvements
 My first improvement was to add a test.
@@ -18,9 +17,9 @@ To do this I needed to wrap the code in a function, parameterize the data file, 
 create some test data.
 
 Since the original code doesn't return anything, I made the assumption that the function's only output is stdout which
-might be getting piped to another program.
+might be getting piped to another program. I wanted to keep with programming to the interface: standard out.
 
-Secondly, and before any refactoring was committed, I added a linter to keep things clean.
+My second improvement was adding a linter to keep things clean.
 
 ## Part 2
 For step 1, I first want to get a baseline established and added to a test case, mostly
@@ -55,10 +54,23 @@ sys     0m0.348s
 For any further gains in performance we'll need to manage the state better and probably move the function to a class. 
 This will ease testing as well but we'll save that for the next section.
 
-For step 2 & 3, normally I like my tests to fun fast, so I avoid testing with large data sets (unless checking 
+For step 2 & 3, normally I like my tests to run fast, so I avoid testing with large data sets (unless checking 
 performance). So, I'm going to:
 1. Move the function to class, add some properties methods.
 2. Update/fix the test cases and main script.
 3. Write a test case that checks the processing of `data.txt` by creating an `expectation.csv` file.
 
 For step 4, I'll create some tests to check larger values and sets with 0 - 3 items.
+
+My last improvement was adding a README.md and requirements.txt.
+
+Note: Normally, I would use smaller data sets to encourage running tests often.
+
+## Questions:
+### Explain how your optimization works and why you took this approach
+
+### Would your approach continue to work if there were millions or billions of input values?
+A million, yes; a billion No. The array is stored in memory and eventually the sum() function would run out of memory as
+well.
+
+### Would your approach still be efficient if you needed to store the intermediate state between each IQM calculation in a data store? If not, how would you change it to meet this requirement?
