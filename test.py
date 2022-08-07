@@ -17,6 +17,13 @@ class TestIncrementalInterQuartileMean(unittest.TestCase):
             expect_string += line
         self.assertEqual(capturedOutput.getvalue(), expect_string)
 
+    def test_performance(self):
+        from timeit import timeit
+        setup = "from incremental_interquartile_mean import interquartile_mean; test_data_file = open('data.txt', 'r')"
+        execution_time = timeit(stmt="interquartile_mean(test_data_file)", setup=setup, number=5)
+        print('The interquartile_mean function execution time was:', execution_time)
+        self.assertLess(execution_time, 200)  # The last few exicutions were around 160 - 175 seconds.
+
 
 if __name__ == '__main__':
     unittest.main()

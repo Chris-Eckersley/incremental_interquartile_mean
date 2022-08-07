@@ -1,7 +1,7 @@
 #Improvement process and steps
 
 -------------------------------------------------------
-
+## Part 1
 ### Step 1: Quick refresher on IQM 
 After a quick refresher I spent some time thinking about the challenges of incrementally calculating the IQM and what 
 testing might look like.
@@ -21,3 +21,14 @@ Since the original code doesn't return anything, I made the assumption that the 
 might be getting piped to another program.
 
 Secondly, and before any refactoring was commited, I added a linter to keep things clean.
+
+## Part 2
+I first want to get a baseline established and added to a test case. Mostly
+for documenting the results.
+
+The systems time command returned: (Includes module and file loading)
+```commandline
+real    2m7.046s
+user    2m6.203s
+sys     0m0.511s
+```
