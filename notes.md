@@ -3,7 +3,7 @@
 -------------------------------------------------------
 
 ### Step 1: Quick refresher on IQM 
-After a quick refresher I spent some time thinking about the challenges of incramentally calculating the IQM and what 
+After a quick refresher I spent some time thinking about the challenges of incrementally calculating the IQM and what 
 testing might look like.
 
 ### Step 2: Read and step through the code
@@ -11,13 +11,13 @@ Playing with and stepping through the code with a debugger helps build interest 
 spend a little time thinking about the big picture and looking for any obvious issues early on. Then that gets sent off
 to my subconscious. :-)
 
-### Step 3: Refactoring
-My first improvements were to wrap the code in a function and parameterizing the file so that I can export the function
-and create some unit tests.
+### Step 3: Refactoring & Improvements
+My first improvement was to add a test.
 
-Since the original code doesn't return anything, I made the assumption that the function's only output is stdout 
-which is getting piped to another program.
+To do this I needed to wrap the code in a function, parameterize the data file, export the function to a unit test, and 
+create some test data.
 
-As the standard out as my interface, I started by writing a test with a smaller data set that would run a bit more quickly.
+Since the original code doesn't return anything, I made the assumption that the function's only output is stdout which
+might be getting piped to another program.
 
-Before I committed my tests and first refactor I wanted to add a linter to keep things clean.
+Secondly, and before any refactoring was commited, I added a linter to keep things clean.
