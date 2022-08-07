@@ -1,23 +1,23 @@
 #!/usr/bin/python3
 import math
-from typing import Iterable
 from bisect import insort
 
 
-def interquartile_mean(iterable: Iterable) -> None:
-    """
-    A function to calculate the Interquartile Mean and print to
-    standard out.
-    :param iterable: An iterable of items to cast to integers
-    :rtype: None
-    :return: None
-    """
-    data = []
-    for number in iterable:
-        insort(data, int(number))
-        if len(data) >= 4:
-            quarter_data_length = len(data) / 4.0
-            interquartile_range = data[
+class InterquartileMeanCalculator:
+    def __init__(self):
+        self._data = []
+
+    @property
+    def data(self) -> list:
+        return self._data
+
+    def add_to_data(self, number: str) -> None:
+        insort(self.data, int(number))
+
+    def interquartile_mean(self) -> float:
+        if len(self.data) >= 4:
+            quarter_data_length = len(self.data) / 4.0
+            interquartile_range = self.data[
                 int(math.ceil(quarter_data_length)) - 1:
                 int(math.floor((3 * quarter_data_length))) + 1
             ]
@@ -27,9 +27,16 @@ def interquartile_mean(iterable: Iterable) -> None:
                 * factor
             )
             mean = sum_interquartile_range / (2 * quarter_data_length)
-            print("%d: %.2f" % (len(data), mean))
+            return mean
 
 
 if __name__ == '__main__':
+    calculator = InterquartileMeanCalculator()
     file = open('data.txt', 'r')
-    interquartile_mean(file)
+    for line in file:
+        calculator.add_to_data(line)
+        if len(calculator.data) > 3:
+            print("%d: %.2f" % (
+                len(calculator.data),
+                calculator.interquartile_mean()
+            ))
