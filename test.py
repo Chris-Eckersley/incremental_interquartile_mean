@@ -29,6 +29,8 @@ class TestIQMStandardOut(unittest.TestCase):
         for line in sm_data_expectations:
             expect_string += line
         self.assertEqual(capturedOutput.getvalue(), expect_string)
+        test_data_file.close()
+        sm_data_expectations.close()
 
 
 class TestIQMPerfromance(unittest.TestCase):
@@ -48,6 +50,7 @@ class TestIQMPerfromance(unittest.TestCase):
         print('The interquartile_mean function execution time was:',
               execution_time)
         self.assertLess(execution_time, 60)
+        test_data_file.close()
 
 
 class TestIQMDataFileResults(unittest.TestCase):
@@ -68,6 +71,8 @@ class TestIQMDataFileResults(unittest.TestCase):
                     [len(calculator.data), calculator.interquartile_mean()],
                     [int(expectation[0]), float(expectation[1])]
                 )
+        expectation_file.close()
+        data_txt_file.close()
 
 
 class TestDataSetLessThanFour(unittest.TestCase):
@@ -87,6 +92,38 @@ class TestDataSetLessThanFour(unittest.TestCase):
                     next(expectations),
                     calculator.interquartile_mean()
                 )
+
+
+class TestIQMWithZeros(unittest.TestCase):
+    def test_output(self):
+        test_data = [0, 0, 0, 0, 0, 0, 10, 11]
+        expectations = iter([
+            mean(test_data[:1]),
+            mean(test_data[:2]),
+            mean(test_data[:3]),
+            0,
+            0,
+            0,
+            0,
+            0
+        ])
+        calculator = InterquartileMeanCalculator()
+        for number in test_data:
+            with self.subTest(line=number):
+                calculator.add_to_data(number)
+                self.assertEqual(
+                    next(expectations),
+                    calculator.interquartile_mean()
+                )
+
+
+class TestIQRToSixHundred(unittest.TestCase):
+    def test_output(self):
+        with open('test_data/data_set_0-600.txt', 'r') as data_txt_file:
+            calculator = InterquartileMeanCalculator()
+            for line in data_txt_file:
+                calculator.add_to_data(line)
+            self.assertEqual(calculator.interquartile_mean(), 358.2574)
 
 
 if __name__ == '__main__':
