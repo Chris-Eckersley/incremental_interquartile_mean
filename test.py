@@ -1,14 +1,17 @@
 import unittest
 from io import StringIO
 import sys
+import time
+import csv
+from statistics import mean
 from incremental_interquartile_mean import InterquartileMeanCalculator
 
 
-class TestIncrementalInterQuartileMean(unittest.TestCase):
+class TestIQMStandardOut(unittest.TestCase):
     def test_standard_output(self):
         """
         First test case with a small data set to encourage testing often.
-        Original functionality did not print means of sets shorter than 4.
+        Original functionality did not print IQ means of sets shorter than 4.
         """
         calculator = InterquartileMeanCalculator()
         test_data_file = open('test_data/sm_data_set.txt', 'r')
@@ -26,8 +29,9 @@ class TestIncrementalInterQuartileMean(unittest.TestCase):
         for line in sm_data_expectations:
             expect_string += line
         self.assertEqual(capturedOutput.getvalue(), expect_string)
-        print('done with test 1.')
 
+
+class TestIQMPerfromance(unittest.TestCase):
     def test_performance(self):
         """
         The first few execution times were around 160 - 175 seconds.
@@ -35,7 +39,6 @@ class TestIncrementalInterQuartileMean(unittest.TestCase):
         """
         calculator = InterquartileMeanCalculator()
         test_data_file = open('data.txt', 'r')
-        import time
         start_time = time.time()
         for line in test_data_file:
             calculator.add_to_data(line)
@@ -45,6 +48,45 @@ class TestIncrementalInterQuartileMean(unittest.TestCase):
         print('The interquartile_mean function execution time was:',
               execution_time)
         self.assertLess(execution_time, 60)
+
+
+class TestIQMDataFileResults(unittest.TestCase):
+    """
+    The original output skipped the first 3 outputs
+    so I decided to take that step 2 literally.
+    """
+    def test_output(self):
+        expectation_file = open('test_data/main_data_expect.csv', 'r')
+        csv_reader = csv.reader(expectation_file, delimiter=',')
+        data_txt_file = open('data.txt', 'r')
+        calculator = InterquartileMeanCalculator()
+        for line in data_txt_file:
+            calculator.add_to_data(line)
+            expectation = next(csv_reader)
+            if len(calculator.data) > 3:
+                self.assertEqual(
+                    [len(calculator.data), calculator.interquartile_mean()],
+                    [int(expectation[0]), float(expectation[1])]
+                )
+
+
+class TestDataSetLessThanFour(unittest.TestCase):
+    def test_output(self):
+        test_data = [224, 213, 190, 199]
+        expectations = iter([
+            mean(test_data[:1]),
+            mean(test_data[:2]),
+            mean(test_data[:3]),
+            206.0
+        ])
+        calculator = InterquartileMeanCalculator()
+        for number in test_data:
+            with self.subTest(line=number):
+                calculator.add_to_data(number)
+                self.assertEqual(
+                    next(expectations),
+                    calculator.interquartile_mean()
+                )
 
 
 if __name__ == '__main__':

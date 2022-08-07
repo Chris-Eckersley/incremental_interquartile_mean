@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import math
+import statistics
 from bisect import insort
 
 
@@ -26,8 +27,10 @@ class InterquartileMeanCalculator:
                 (interquartile_range[0] + interquartile_range[-1])
                 * factor
             )
-            mean = sum_interquartile_range / (2 * quarter_data_length)
-            return mean
+            IQM = sum_interquartile_range / (2 * quarter_data_length)
+            return IQM
+        else:
+            return statistics.mean(self.data)
 
 
 if __name__ == '__main__':
