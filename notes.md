@@ -2,28 +2,35 @@
 
 -------------------------------------------------------
 ## Part 1
+I decided to break down this imporvement process into steps and explain each step.
+
 ### Step 1: Quick refresher on IQM 
-After a quick refresher I spent some time thinking about the challenges of incrementally calculating the IQM and what 
-testing might look like.
+It's been a while. :-) After a quick refresher I spent some time thinking about the challenges of incrementally 
+calculating the IQM and what testing might look like.
 
 ### Step 2: Read and step through the code
-Playing with and stepping through the code with a debugger helps build interest and gets my mind in the game. :-)  I 
-spent a little time thinking about the big picture and looking for any obvious issues early on. Then I set that aside.
+Playing with and stepping through the code with a debugger helps build interest, exposes and obvious issues, and gets my 
+mind in the game. :-)  I spent a little time thinking about the big picture and looking for any obvious issues early on. 
+Then I set that aside.
 
 ### Step 3: Refactoring & Improvements
-My first improvement was to add a test.
+My first improvement was to add a fast test. Having fast tests encourages testing often.
 
-To do this I needed to wrap the code in a function, parameterize the data file, export the function to a unit test, and 
+To do this, I needed to wrap the code in a function, parameterize the data file, export the function to a unit test, and 
 create some test data.
 
 Since the original code doesn't return anything, I made the assumption that the function's only output is stdout which
-might be getting piped to another program. I wanted to keep with programming to the interface: standard out.
+might be getting piped to another program. I wanted to keep with programming to the interface which was standard out.
 
 My second improvement was adding a linter to keep things clean.
 
+I wanted to stop here and make any further changes focused to Part 2 of the code challenge. I knew I'd end up moving the
+function to a class, adding more tests, but in the spirit of TDD, this was the minimum changes needed to satisfy the
+section. Plus, I wanted to highlight the performance improvements. :-)
+
 ## Part 2
-For step 1, I first want to get a baseline established and added to a test case, mostly
-for documenting the results and running the script with a smaller data set.
+For step 1, I first want to get a baseline established and added to a test case (mostly
+for documenting the results).
 
 The systems time command returned: (Includes module and file loading)
 ```commandline
@@ -51,8 +58,8 @@ user    0m36.655s
 sys     0m0.348s
 ```
 
-For any further gains in performance we'll need to manage the state better and probably move the function to a class. 
-This will ease testing as well but we'll save that for the next section.
+For any further gains in performance I'll need to manage the state better and probably move the function to a class. 
+This will ease testing as well, but we'll save that for the next section.
 
 For step 2 & 3, normally I like my tests to run fast, so I avoid testing with large data sets (unless checking 
 performance). So, I'm going to:
@@ -60,17 +67,26 @@ performance). So, I'm going to:
 2. Update/fix the test cases and main script.
 3. Write a test case that checks the processing of `data.txt` by creating an `expectation.csv` file.
 
+If this was a more complex class I would've started with an abstract base class and programmed to the interface. That
+just seemed overkill here.
+
 For step 4, I'll create some tests to check larger values and sets with 0 - 3 items.
 
 My last improvement was adding a README.md and requirements.txt.
 
-Note: Normally, I would use smaller data sets to encourage running tests often.
+Note: Normally, I would only use smaller data sets to encourage running tests often.
 
 ## Questions:
 ### Explain how your optimization works and why you took this approach
 
-### Would your approach continue to work if there were millions or billions of input values?
-A million, yes; a billion No. The array is stored in memory and eventually the sum() function would run out of memory as
-well.
 
-### Would your approach still be efficient if you needed to store the intermediate state between each IQM calculation in a data store? If not, how would you change it to meet this requirement?
+### Would your approach continue to work if there were millions or billions of input values?
+A million, yes; a billion probably not. The array is stored in memory and eventually the sum() function would run out of 
+memory as well.
+
+### Would your approach still be efficient if you needed to store the intermediate state between each IQM ...
+...calculation in a data store? If not, how would you change it to meet this requirement?
+
+It's only making sense to me to store the array values as the intermediate state, in which case would work fine. If we
+wanted to store more we might want to change the algorythm so we don't have to call `sum()` each time we want to 
+calculate the IQM. Maybe an average of IQMs or something.

@@ -53,6 +53,24 @@ class TestIQMPerfromance(unittest.TestCase):
         test_data_file.close()
 
 
+class TestInterface(unittest.TestCase):
+    def test_interface(self):
+        calculator = InterquartileMeanCalculator()
+        calculator.add_to_data(300)
+        self.assertEqual(len(calculator.data), 1)
+        self.assertEqual(calculator.data[0], 300)
+
+
+class TestInsertInPlace(unittest.TestCase):
+    def test_interface(self):
+        test_data = [299, 3, 0, 600, 4, 5, 0, 83]
+        calculator = InterquartileMeanCalculator()
+        for number in test_data:
+            calculator.add_to_data(number)
+        expectation = [0, 0, 3, 4, 5, 83, 299, 600]
+        self.assertEqual(calculator.data, expectation)
+
+
 class TestIQMDataFileResults(unittest.TestCase):
     """
     The original output skipped the first 3 outputs
